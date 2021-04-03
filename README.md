@@ -3,6 +3,6 @@
 This Client will be able to:
 <ul>
   <li>provide a GUI run nmap requests </li>
-* Visualize results 
-* Enumerate vlunerabilities 
+  <li>Visualize results </li>
+  <li> Enumerate vlunerabilities </li>
 </ul>
