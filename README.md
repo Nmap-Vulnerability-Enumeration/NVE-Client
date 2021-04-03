@@ -1,6 +1,8 @@
 ## Client for NVE
 <br/>
 This Client will be able to:
-* provide a GUI run nmap requests
+<ul>
+  <li>provide a GUI run nmap requests </li>
 * Visualize results 
 * Enumerate vlunerabilities 
+</ul>
