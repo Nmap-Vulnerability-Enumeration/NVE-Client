@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import React, { Component } from "react";
@@ -6,7 +5,6 @@ import {
   Route,
   BrowserRouter as Router,
   Switch,
-  Redirect,
 } from "react-router-dom";
 import Results from './pages/results'
 
