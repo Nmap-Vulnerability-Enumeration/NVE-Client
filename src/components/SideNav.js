@@ -11,15 +11,15 @@ export default class SideNav extends Component {
   render() {
     return (
       <Nav  variant="tabs" defaultActiveKey="/home" className="flex-column">
-        <Button variant="secondary" size ="lg">
+        <Button variant="secondary" size ="lg" onClick={() =>this.props.changeFilter("all")}>
           All
         </Button>
         <br/>
-        <Button variant="secondary" size ="lg">
+        <Button variant="secondary" size ="lg" onClick={() =>this.props.changeFilter("os")}>
             OS
         </Button>
         <br/>
-        <Button variant="secondary" size ="lg">
+        <Button variant="secondary" size ="lg" onClick={() =>this.props.changeFilter("services")}>
           Services
         </Button>
       </Nav>

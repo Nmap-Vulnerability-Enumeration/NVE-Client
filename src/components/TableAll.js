@@ -9,7 +9,6 @@ export default class TableAll extends Component {
 
   row = (key) => {
     let block = this.props.data[key];
-    console.log(block);
     return React.createElement(() => (
       <tr>
         <td>{block.hostnames[0].name}</td>

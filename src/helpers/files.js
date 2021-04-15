@@ -10,6 +10,5 @@ export async function readJSON(path) {
     .then((text) => {
       return stringToObj(text);
     });
-  console.log(data)
   return data;
 }
