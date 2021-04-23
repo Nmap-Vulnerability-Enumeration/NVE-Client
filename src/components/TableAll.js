@@ -8,20 +8,25 @@ export default class TableAll extends Component {
   }
 
   row = (key) => {
-    let block = this.props.data[key];
+    let block = this.props.data[key].value;
     return React.createElement(() => (
       <tr>
-        <td>{block.hostnames[0].name}</td>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+        <td>{block.hostname}</td>
+        <td>{block.ip.discovery}</td>
+        <td>{block.os == null ? "NA": block.os.name}</td>
+        <td>{block.status.state}</td>
+        <td>{block.ports.filter(port =>port.state == "open").length}</td>
+        <td>{"NA"}</td>
+        <td>{"NA"}</td>
+        <td>{block.vendor == null ? "NA": block.vendor}</td>
+        <td>{block.vulns == null ? "NA": block.vulns}</td>
       </tr>
     ));
   };
 
   render() {
     return (
-      <Table striped bordered hover variant="dark" responsive>
+      <Table striped bordered hover variant="dark"  responsive>
         <thead>
           <tr>
             <th>Hostname</th>

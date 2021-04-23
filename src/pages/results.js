@@ -16,43 +16,53 @@ export default class Results extends Component {
     super(props);
     this.state = {
       results: {},
-      filter: 'all',
-      view: 'devices'
+      filter: "all",
+      view: "devices",
     };
-    this.changeFilter = this.changeFilter.bind(this)
-    this.changeView = this.changeView.bind(this)
+    this.changeFilter = this.changeFilter.bind(this);
+    this.changeView = this.changeView.bind(this);
   }
 
   async componentDidMount() {
-    var path = "/m.json";
+    var path = "data/device_decoder_tester.json";
     var _results = await readJSON(path);
     this.setState({
-      results: _results["scan"],
+      results: _results,
     });
   }
 
-  changeFilter =(newFilter) =>{
-      this.setState({filter: newFilter})
-  }
+  changeFilter = (newFilter) => {
+    this.setState({ filter: newFilter });
+  };
 
-  changeView =(newView) =>{
-    console.log(newView)
-    this.setState({view: newView})
-}
+  changeView = (newView) => {
+    console.log(newView);
+    this.setState({ view: newView });
+  };
 
   render() {
     return (
-      <Container fluid style={{padding:0}}>
-        <div style={{ backgroundColor: "#1B1212" }}>
+      <Container fluid style={{ padding: 0 }}>
+        <div style={{ backgroundColor: "#1B1212", width: "100%" }}>
           <Row>
             <HeaderBar />
           </Row>
           <br />
-          <Row style={{padding:0}}>
-            <Col sm={10} >
+          <Row style={{ padding: 0 }}>
+            <Col md={10}>
               <ButtonGroup aria-label="Basic example" size="lg">
-                <Button variant="secondary" onClick={()=> this.changeView("devices")}>Devices</Button>
-                <Button variant="secondary" nClick={()=> this.changeView("vulnerabilities")}>Discovered Vulnerabilties</Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => this.changeView("devices")}
+                >
+                  Devices
+                </Button>
+                <Button
+                  variant="secondary"
+                  nClick={() => this.changeView("vulnerabilities")}
+                >
+                  Discovered Vulnerabilties
+                </Button>
               </ButtonGroup>
             </Col>
             <Col>
@@ -68,16 +78,20 @@ export default class Results extends Component {
           </Row>
           <br />
         </div>
+        <div style={{ backgroundColor: "#1B1212", width: "100%", display: 'inline-flex !important' }}>
         <Row>
           <div style={{ backgroundColor: "#1B1212" }}>
-            <Col sm={1}>
-              <SideNav changeFilter= {this.changeFilter}/>
+            <Col md={1}>
+              <SideNav changeFilter={this.changeFilter} />
             </Col>
           </div>
-          <Col style={{padding:0}}>
-            <TableAll data={this.state.results} />
-          </Col>
+          <div style={{ backgroundColor: "#1B1212" }}>
+            <Col md="auto" style={{ padding: 0 }}>
+              <TableAll data={this.state.results} />
+            </Col>
+          </div>
         </Row>
+        </div>
       </Container>
     );
   }
