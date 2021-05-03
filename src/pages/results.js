@@ -8,8 +8,10 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { readJSON, stringToObj } from "../helpers/files";
 import TableAll from "../components/TableAll";
+import TableVulnerabilities from "../components/TableVulnerabilities";
 import SideNav from "../components/SideNav";
 import HeaderBar from "../components/HeaderBar";
+import {backgroundStyle} from '../helpers/styles'
 
 export default class Results extends Component {
   constructor(props) {
@@ -35,6 +37,15 @@ export default class Results extends Component {
     this.setState({ filter: newFilter });
   };
 
+  RenderResults = () =>{
+    if (this.state.view == "devices"){
+      return (<TableAll data={this.state.results} />)
+    }
+    else{
+      return (<TableVulnerabilities data={this.state.results} />)
+    }
+  }
+
   changeView = (newView) => {
     console.log(newView);
     this.setState({ view: newView });
@@ -42,8 +53,8 @@ export default class Results extends Component {
 
   render() {
     return (
-      <Container fluid style={{ padding: 0 }}>
-        <div style={{ backgroundColor: "#1B1212", width: "100%" }}>
+      <div style={backgroundStyle}>
+      <Container fluid style={{ padding: 0 }}>    
           <Row>
             <HeaderBar />
           </Row>
@@ -59,7 +70,7 @@ export default class Results extends Component {
                 </Button>
                 <Button
                   variant="secondary"
-                  nClick={() => this.changeView("vulnerabilities")}
+                  onClick={() => this.changeView("vulnerabilities")}
                 >
                   Discovered Vulnerabilties
                 </Button>
@@ -77,23 +88,22 @@ export default class Results extends Component {
             </Col>
           </Row>
           <br />
-        </div>
-        <div style={{ backgroundColor: "#1B1212", width: "100%", display: 'inline-flex !important' }}>
+        <div style={{ backgroundColor: "black", width: "100%", display: 'inline-flex !important' }}>
         <Row>
-          <div style={{ backgroundColor: "#1B1212" }}>
+          <div style={{ backgroundColor: "black" }}>
             <Col md={1}>
               <SideNav changeFilter={this.changeFilter} />
             </Col>
           </div>
-          <div style={{ backgroundColor: "#1B1212" }}>
+          <div style={{ backgroundColor: "black" }}>
             <Col md="auto" style={{ padding: 0 }}>
-              <TableAll data={this.state.results} />
+              {this.RenderResults()}
             </Col>
           </div>
         </Row>
         </div>
       </Container>
+      </div>
     );
   }
 }
-//               {/* <hr style={{width: '10px', height: '20px', display: 'inline-block'}}/> */ }
