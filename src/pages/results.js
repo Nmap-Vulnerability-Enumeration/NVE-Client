@@ -2,16 +2,14 @@ import React, { Component } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
-import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import { readJSON, stringToObj } from "../helpers/files";
-import TableAll from "../components/TableAll";
-import TableVulnerabilities from "../components/TableVulnerabilities";
-import SideNav from "../components/SideNav";
-import HeaderBar from "../components/HeaderBar";
-import {backgroundStyle} from '../helpers/styles'
+import { readJSON, stringToObj } from "../Helpers/files";
+import TableAll from "../Components/TableAll";
+import TableVulnerabilities from "../Components/TableVulnerabilities";
+import SideNav from "../Components/SideNav";
+import HeaderBar from "../Components/HeaderBar";
+import { backgroundStyle } from "../Helpers/styles";
 
 export default class Results extends Component {
   constructor(props) {
@@ -31,20 +29,29 @@ export default class Results extends Component {
     this.setState({
       results: _results,
     });
+
+    console.log(_results)
   }
 
+  refreshPage = () =>{
+    this.props.history.push(
+      "/scan/IpAddress=" +
+        this.props.match.params.address +
+        "&SubnetMask=" +
+        this.props.match.params.mask
+    );
+  }
   changeFilter = (newFilter) => {
     this.setState({ filter: newFilter });
   };
 
-  RenderResults = () =>{
-    if (this.state.view == "devices"){
-      return (<TableAll data={this.state.results} />)
+  RenderResults = () => {
+    if (this.state.view === "devices") {
+      return <TableAll data={this.state.results} />;
+    } else {
+      return <TableVulnerabilities data={this.state.results} />;
     }
-    else{
-      return (<TableVulnerabilities data={this.state.results} />)
-    }
-  }
+  };
 
   changeView = (newView) => {
     console.log(newView);
@@ -54,7 +61,7 @@ export default class Results extends Component {
   render() {
     return (
       <div style={backgroundStyle}>
-      <Container fluid style={{ padding: 0 }}>    
+        <Container fluid style={{ padding: 0 }}>
           <Row>
             <HeaderBar />
           </Row>
@@ -80,7 +87,7 @@ export default class Results extends Component {
               <Row>
                 <Col>
                   <ButtonGroup aria-label="Basic example" size="lg">
-                    <Button variant="secondary">Refresh</Button>
+                    <Button variant="secondary" onClick={this.refreshPage}>Refresh</Button>
                     <Button variant="secondary">Export</Button>
                   </ButtonGroup>
                 </Col>
@@ -88,21 +95,27 @@ export default class Results extends Component {
             </Col>
           </Row>
           <br />
-        <div style={{ backgroundColor: "black", width: "100%", display: 'inline-flex !important' }}>
-        <Row>
-          <div style={{ backgroundColor: "black" }}>
-            <Col md={1}>
-              <SideNav changeFilter={this.changeFilter} />
-            </Col>
+          <div
+            style={{
+              backgroundColor: "black",
+              width: "100%",
+              display: "inline-flex !important",
+            }}
+          >
+            <Row>
+              <div style={{ backgroundColor: "black" }}>
+                <Col md={1}>
+                  <SideNav changeFilter={this.changeFilter} />
+                </Col>
+              </div>
+              <div style={{ backgroundColor: "black" }}>
+                <Col md="auto" style={{ padding: 0 }}>
+                  {this.RenderResults()}
+                </Col>
+              </div>
+            </Row>
           </div>
-          <div style={{ backgroundColor: "black" }}>
-            <Col md="auto" style={{ padding: 0 }}>
-              {this.RenderResults()}
-            </Col>
-          </div>
-        </Row>
-        </div>
-      </Container>
+        </Container>
       </div>
     );
   }

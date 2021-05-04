@@ -17,7 +17,7 @@ export default class TableAll extends Component {
         <td>{block.status.state}</td>
         <td>{block.ports.filter(port =>port.state == "open").length}</td>
         <td>{"NA"}</td>
-        <td>{"NA"}</td>
+        <td>{block.uptime == null ? "NA" : block.uptime}</td>
         <td>{block.vendor == null ? "NA": block.vendor}</td>
         <td>{block.vulns == null ? "NA": block.vulns}</td>
       </tr>

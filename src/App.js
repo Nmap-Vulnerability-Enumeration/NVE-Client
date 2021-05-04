@@ -6,7 +6,8 @@ import {
   BrowserRouter as Router,
   Switch,
 } from "react-router-dom";
-import Results from './pages/results'
+import Results from './Pages/Results'
+import Home from './Pages/Home'
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={Results}></Route>
+          <Route exact path="/search" component={Home}></Route>
+          <Route exact path="/scan/IpAddress=:address&SubnetMask=:mask" component={Results}></Route>
         </Switch>
       </Router>
     );

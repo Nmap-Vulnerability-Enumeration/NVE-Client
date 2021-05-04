@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Nmap Scanner",
+  "name": "Nmap Vulnerability Enumerator",
   "icons": [
     {
       "src": "favicon.ico",
