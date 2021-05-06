@@ -81,16 +81,16 @@ export default class Home extends Component {
   render() {
     return (
       <div style={backgroundStyle}>
-        <Container fluid style={{ padding: 0, backgroundColor: "#1e252d" }}>
+        <Container fluid style={{ padding: 0, backgroundColor: "#1e252d", textAlign: 'center' }}>
           <Modal show={this.state.showModal} onHide={this.handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>
-                Scanning for devices... may take serveral minutes
+                Scanning for devices..
               </Modal.Title>
             </Modal.Header>
             <Modal.Body stlye={{ disply: "flex", justifyContent: "center" }}>
               <div>
-                <Spinner animation="border" size="lg" />{" "}
+                <Spinner animation="border" size="xl" />
               </div>
             </Modal.Body>
             <Modal.Footer>
@@ -145,7 +145,7 @@ export default class Home extends Component {
                     <Button
                       variant="outline-secondary"
                       type="submit"
-                      style={{ paddingTop: 0, paddingBottom: 0, margin: 0 }}
+                      style={{ paddingTop: '0rem', paddingBottom: '0rem', margin: 0 }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
