@@ -23,7 +23,16 @@ export default class Results extends Component {
     this.changeView = this.changeView.bind(this);
   }
 
+  readFromFile = async () => {
+    var path = "data/device_decoder_tester.json";
+    var _results = await readJSON(path);
+    this.setState({
+      results: _results,
+    });
+  }
+
   async componentDidMount() {
+   
     await fetch("/api/v1/devices/all")
     .then( response => response.json())
     .then(res => this.setState({results: res}))
