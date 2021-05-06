@@ -24,13 +24,9 @@ export default class Results extends Component {
   }
 
   async componentDidMount() {
-    var path = "data/device_decoder_tester.json";
-    var _results = await readJSON(path);
-    this.setState({
-      results: _results,
-    });
-
-    console.log(_results)
+    await fetch("/api/v1/devices/all")
+    .then( response => response.json())
+    .then(res => this.setState({results: res}))
   }
 
   refreshPage = () =>{

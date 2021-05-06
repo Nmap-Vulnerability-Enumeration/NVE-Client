@@ -7,18 +7,26 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Spinner from "react-bootstrap/Spinner";
 import { backgroundStyle, H1Style } from "../Helpers/styles";
 import { FormGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { setUp } from "../Helpers/requests";
 
 export default class Home extends Component {
   f;
   constructor(props) {
     super(props);
-    this.state = { isValidated: false, IpAddress: "", SubnetMask: "" };
+    this.state = {
+      isValidated: false,
+      IpAddress: "",
+      SubnetMask: "",
+      showModal: false,
+    };
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -27,12 +35,32 @@ export default class Home extends Component {
       event.preventDefault();
       event.stopPropagation();
       this.setState({ isValidated: true });
-      this.props.history.push(
-        "/scan/IpAddress=" +
-          this.state.IpAddress +
-          "&SubnetMask=" +
-          this.state.SubnetMask
-      );
+
+      let request = setUp(this.state.IpAddress, this.state.SubnetMask);
+      console.log(request);
+      let response = await fetch("/api/v1/setup", request).then((response) => {
+        return response.status;
+      });
+
+      if (response === 200) {
+        this.handleShow();
+        let scan_result = await fetch("/api/v1/devices/all").then(
+          (response) => {
+            return response.status;
+          }
+        );
+        if (scan_result == 200) {
+          this.props.history.push(
+            "/scan/IpAddress=" +
+              this.state.IpAddress +
+              "&SubnetMask=" +
+              this.state.SubnetMask
+          );
+        }
+      } else {
+        alert("Error, invalid IP or subnetmaks");
+        return;
+      }
     }
   };
 
@@ -41,11 +69,33 @@ export default class Home extends Component {
     let fleldVal = event.target.value;
     this.setState({ [fieldName]: fleldVal });
   };
-
+  handleClose = () => {
+    this.setState({ showModal: false });
+  };
+  handleShow = () => {
+    this.setState({ showModal: true });
+  };
   render() {
     return (
       <div style={backgroundStyle}>
         <Container fluid style={{ padding: 0, backgroundColor: "#1e252d" }}>
+          <Modal show={this.state.showModal} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                Scanning for devices... may take serveral minutes
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body stlye={{ disply: "flex", justifyContent: "center" }}>
+              <div>
+                <Spinner animation="border" size="lg" />{" "}
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={this.handleClose}>
+                Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <Row md={5}>
             <br />
             <br />
@@ -55,15 +105,15 @@ export default class Home extends Component {
               <h1 style={H1Style}>NMap Vulnerabilty Enumerator</h1>
             </Col>
           </Row>
-          <Row md={2} style={{display:'flex', justifyContent: "center" }}>
+          <Row md={2} style={{ display: "flex", justifyContent: "center" }}>
             <Col>
               <Form
                 noValidate
                 validated={this.state.isValidated}
                 onSubmit={this.handleSubmit}
-                style={{margin: 0}}
+                style={{ margin: 0 }}
               >
-                <InputGroup className="mb-3" style={{margin: 0}}>
+                <InputGroup className="mb-3" style={{ margin: 0 }}>
                   <FormGroup>
                     <FormControl
                       placeholder="IP Address"
