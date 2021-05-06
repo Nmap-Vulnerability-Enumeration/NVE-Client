@@ -49,6 +49,8 @@ export default class Home extends Component {
             return response.status;
           }
         );
+        console.log(scan_result)
+
         if (scan_result == 200) {
           this.props.history.push(
             "/scan/IpAddress=" +
@@ -58,7 +60,8 @@ export default class Home extends Component {
           );
         }
       } else {
-        alert("Error, invalid IP or subnetmaks");
+        
+        alert("Error Code: " + response + ", invalid IP or subnetmaks");
         return;
       }
     }
