@@ -9,7 +9,7 @@ import { handleEmpty, doesExist } from "../../Helpers/processdata";
 export default class Vulnerabilities extends Component {
   constructor(props) {
     super(props);
-    this.state = { res: [], loaded: false, scanning: false, showAlert: true };
+    this.state = { res: [], loaded: false, scanning: false, showAlert: false };
     this.getVulnerabilities = this.getVulnerabilities.bind(this);
   }
 
@@ -57,7 +57,12 @@ export default class Vulnerabilities extends Component {
         console.log(res);
       })
       .catch((error) => {
-        this.setState({ vulnerabilities: [], loaded: false, scanning: false, showAlert: true });
+        this.setState({
+          vulnerabilities: [],
+          loaded: false,
+          scanning: false,
+          showAlert: true,
+        });
         console.log(error);
       });
   };
@@ -65,10 +70,13 @@ export default class Vulnerabilities extends Component {
   alertMessage = () => {
     if (this.state.showAlert) {
       return (
-        <Alert variant="danger" onClose={() => this.setState({showAlert: false})} dismissible>
-          <p>
-           Query Failed, try again later
-          </p>
+        <Alert
+        style={{marginLeft: 20}}
+          variant="danger"
+          onClose={() => this.setState({ showAlert: false })}
+          dismissible
+        >
+          Loading Vulnerabilities failed, please try again later.
         </Alert>
       );
     }
@@ -76,7 +84,7 @@ export default class Vulnerabilities extends Component {
   setShow = () => {};
   render() {
     return (
-      <div style={{width: "100%", marginRight: 30}}>
+      <div style={{ width: "100%", marginRight: 30 }}>
         {this.alertMessage()}
         <Card
           style={{
