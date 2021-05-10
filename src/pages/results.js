@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import TableAll from "../Components/TableAll";
 import HeaderBar from "../Components/HeaderBar";
 import { backgroundStyle } from "../Helpers/styles";
-import DetailsModal from "../Components/DetailsModal";
+import DetailsModal from "../Components/Details/DetailsModal";
 import FilterOptions from "../Components/FilterOptions";
 import RefreshExport from "../Components/RefreshExport";
 

@@ -6,8 +6,8 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import { handleEmpty, doesExist } from "../Helpers/processdata";
-import { H1Style } from "../Helpers/styles";
+import { handleEmpty, doesExist } from  "../../Helpers/processdata";
+import { H1Style } from "../../Helpers/styles";
 import IpDetails from "./IpDetails";
 import OsDetails from "./OsDetails";
 import PortDetails from "./PortDetails"

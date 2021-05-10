@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Button from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import { handleEmpty, dropNA } from "../Helpers/processdata";
+import { handleEmpty, dropNA } from "../../Helpers/processdata";
 
 export default class OsDetails extends Component {
   constructor(props) {
