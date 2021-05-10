@@ -2,16 +2,14 @@ import React, { Component } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Form from "react-bootstrap/Form";
-import LoadingModal  from '../Components/LoadingModal'
+import LoadingModal from "../Components/LoadingModal";
 import { backgroundStyle, H1Style } from "../Helpers/styles";
 import { FormGroup } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import { setUp, wasSuccessful, redirect } from "../Helpers/requests";
+import { setUp, redirect } from "../Helpers/requests";
 
 export default class Home extends Component {
   f;
@@ -25,47 +23,53 @@ export default class Home extends Component {
     };
   }
 
-  handleSubmit = async (event) => {
+  cacheResults = async () => {
+    this.handleShow();
 
+    //  cache results
+    await fetch("/api/v1/devices/all")
+      .then((response) => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        redirect(
+          this.props.history,
+          this.state.IpAddress,
+          this.state.SubnetMask
+        );
+      })
+      .catch((error) => {
+        alert("Error Code: " + error);
+        this.handleClose()
+        console.log(error);
+      });
+  };
+
+  handleSubmit = async (event) => {
     const form = event.currentTarget;
 
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-    } 
-    else {
+    } else {
       event.preventDefault();
       event.stopPropagation();
       this.setState({ isValidated: true });
 
       // register address and subnet mask
       let request = setUp(this.state.IpAddress, this.state.SubnetMask);
-      let response = await fetch("/api/v1/setup", request).then((response) => {
-        return response.status;
-      });
-
-      if (wasSuccessful(response)) {
-        this.handleShow();
-
-        //  cache results
-        let scan_result = await fetch("/api/v1/devices/all").then(
-          (response) => {
-            return response.status;
+      await fetch("/api/v1/setup", request)
+        .then((response) => {
+          if (!response.ok) {
+            throw Error(response.statusText);
           }
-        );
-
-        if (wasSuccessful(scan_result)) {
-          redirect(this.props.history, this.state.IpAddress, this.state.SubnetMask)
-        }
-        else{
-          alert("Error Code: " + scan_result);
-        }
-      } 
-      else {
-        
-        alert("Error Code: " + response + ", invalid IP or subnetmaks");
-        return;
-      }
+          this.cacheResults()
+        })
+        .catch((error) => {
+          alert("Error Code: " + error);
+          this.handleClose()
+          console.log(error);
+        });
     }
   };
 
@@ -74,17 +78,30 @@ export default class Home extends Component {
     let fleldVal = event.target.value;
     this.setState({ [fieldName]: fleldVal });
   };
+
   handleClose = () => {
     this.setState({ showModal: false });
   };
+
   handleShow = () => {
     this.setState({ showModal: true });
   };
+
   render() {
     return (
       <div style={backgroundStyle}>
-        <Container fluid style={{ padding: 0, backgroundColor: "#1e252d", textAlign: 'center' }}>
-          <LoadingModal handleClose={this.handleClose} showModal={this.state.showModal} />
+        <Container
+          fluid
+          style={{
+            padding: 0,
+            backgroundColor: "#1e252d",
+            textAlign: "center",
+          }}
+        >
+          <LoadingModal
+            handleClose={this.handleClose}
+            showModal={this.state.showModal}
+          />
           <Row md={5}>
             <br />
             <br />
@@ -131,14 +148,18 @@ export default class Home extends Component {
                     <Button
                       variant="outline-secondary"
                       type="submit"
-                      style={{ paddingTop: '0rem', paddingBottom: '0rem', margin: 0 }}
+                      style={{
+                        margin: 0,
+                        marginLeft: 2,
+                        height: 40,
+                      }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
                         fill="currentColor"
-                        class="bi bi-search"
+                        className="bi bi-search"
                         viewBox="0 0 16 16"
                       >
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
