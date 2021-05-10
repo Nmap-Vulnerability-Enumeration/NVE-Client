@@ -4,24 +4,33 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import { handleEmpty, dropNA } from "../Helpers/processdata";
 
-export default class PortDetail extends Component {
+export default class ServiceDetails extends Component {
   constructor(props) {
     super(props);
   }
 
-  renderDetails = (block) => {
+  renderDetails = (key) => {
+    let block = this.props.data[key];
+    console.log(block);
     return (
-      <Accordion defaultActiveKey="2" style={{ marginLeft: 20 }}>
+      <div>
+      <Accordion defaultActiveKey="3" style={{marginLeft: 20}}>
         <Accordion.Toggle as={Button} variant="link" eventKey="0">
-          Port ID: {handleEmpty(block.portid)}
+          {key}: {block.name}
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-          <Card style={{ marginLeft: 20 }}>
+          <Card style={{marginLeft: 20}}>
             <p> State: {handleEmpty(block.state)}</p>
-            <p> Protocol: {handleEmpty(block.proto)}</p>
+            <p> Reason: {handleEmpty(block.reason)}</p>
+            <p> Product: {handleEmpty(block.product)}</p>
+            <p> Version: {handleEmpty(block.version)}</p>
+            <p> Conf: {handleEmpty(block.conf)}</p>
+            <p> CPE: {handleEmpty(block.cpe)}</p>
           </Card>
         </Accordion.Collapse>
       </Accordion>
+      <br/>
+      </div>
     );
   };
 
@@ -29,12 +38,13 @@ export default class PortDetail extends Component {
     return (
       <Accordion defaultActiveKey="2">
         <Accordion.Toggle as={Button} variant="link" eventKey="0">
-          Ports: (
-          {this.props.data.filter((port) => port.state === "open").length} open)
+          Services: ({Object.keys(this.props.data).length} detected)
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <div>
-            {dropNA(this.props.data).map((block) => this.renderDetails(block))}
+            {Object.keys(this.props.data).map((key, index) =>
+              this.renderDetails(key)
+            )}
           </div>
         </Accordion.Collapse>
       </Accordion>

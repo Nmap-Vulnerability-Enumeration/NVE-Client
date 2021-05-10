@@ -16,7 +16,7 @@ export default class IpDetails extends Component {
           IP address:
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-          <Card>
+          <Card style={{marginLeft: 20}}>
             <p>Discovery IP: {handleEmpty(this.props.data.ip, "discovery")}</p>
             <p>Ipv4: {handleEmpty(this.props.data.ip, "ipv4")}</p>
             <p>ipv6: {handleEmpty(this.props.data.ip, "ipv6")}</p>

@@ -11,7 +11,7 @@ export default class OsDetails extends Component {
 
   renderDetails = (block) => {
     return (
-      <Card>
+      <Card style={{marginLeft: 20}}>
         <p> Type: {handleEmpty(block.type)}</p>
         <p>vendor: {handleEmpty(block.vendor)}</p>
         <p>Os Family: {handleEmpty(block.osfamily)}</p>
@@ -21,9 +21,6 @@ export default class OsDetails extends Component {
     );
   };
 
-componentDidMount(){
-    console.log(this.props.data)
-}
   render() {
     return (
       <Accordion defaultActiveKey="2">

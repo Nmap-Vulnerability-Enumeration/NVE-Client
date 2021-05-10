@@ -11,6 +11,7 @@ import { H1Style } from "../Helpers/styles";
 import IpDetails from "./IpDetails";
 import OsDetails from "./OsDetails";
 import PortDetails from "./PortDetails"
+import ServiceDetails from './ServiceDetails'
 
 export default class DetailsModal extends Component {
   constructor(props) {
@@ -64,7 +65,7 @@ export default class DetailsModal extends Component {
                 <PortDetails data={this.props.data.ports}/>
               </Col>
               <Col>
-                <OsDetails data={this.props.data.os}/>
+                <ServiceDetails data={this.props.data.tcp}/>
               </Col>
             </Row>
           </Container>

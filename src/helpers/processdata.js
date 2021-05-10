@@ -25,7 +25,6 @@ export function doesExist(item) {
 }
 
 export function dropNA(list){
-  console.log(list)
   if (list == null){
     return []
   }

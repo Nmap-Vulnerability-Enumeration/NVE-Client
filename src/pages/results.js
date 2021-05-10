@@ -33,7 +33,7 @@ export default class Results extends Component {
   };
 
   hideDetailsModal = () => {
-    this.setState({ details: [], showDetails: false });
+    this.setState({showDetails: false });
   };
 
   showDetailsModal = async (ipAddress) => {
@@ -41,7 +41,6 @@ export default class Results extends Component {
       .then((response) => response.json())
       .then((res) => {
         this.setState({ details: res[0].value, showDetails: true });
-        console.log(res[0].value);
       });
   };
 
