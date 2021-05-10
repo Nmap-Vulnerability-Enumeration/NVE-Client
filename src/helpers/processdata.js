@@ -14,3 +14,20 @@ export function handleEmpty(item, layer=null, swap = false) {
     return item;
   }
 }
+
+export function doesExist(item) {
+  if (item === "" || item == null){
+    return false;
+  } 
+  else{
+    return true
+  }
+}
+
+export function dropNA(list){
+  console.log(list)
+  if (list == null){
+    return []
+  }
+  return list.filter(data=> doesExist(data))
+}

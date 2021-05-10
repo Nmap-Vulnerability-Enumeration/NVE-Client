@@ -6,9 +6,11 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import { handleEmpty } from "../Helpers/processdata";
+import { handleEmpty, doesExist } from "../Helpers/processdata";
 import { H1Style } from "../Helpers/styles";
 import IpDetails from "./IpDetails";
+import OsDetails from "./OsDetails";
+import PortDetails from "./PortDetails"
 
 export default class DetailsModal extends Component {
   constructor(props) {
@@ -23,7 +25,6 @@ export default class DetailsModal extends Component {
       .then((response) => response.json())
       .then((res) => {
         this.setState({ vulnerabilities: res });
-        console.log(res[0].value);
       });
   };
 
@@ -44,7 +45,7 @@ export default class DetailsModal extends Component {
           <Container fluid>
             <Row>
               <Col>
-                <p> Hostname: {handleEmpty(this.props.data.mac)}</p>
+                <p> Hostname: {handleEmpty(this.props.data.hostname)}</p>
               </Col>
               <Col>
                 <IpDetails data={this.props.data} />
@@ -55,21 +56,15 @@ export default class DetailsModal extends Component {
                 <p>MAC Address: {handleEmpty(this.props.data.mac)}</p>
               </Col>
               <Col>
-                <Accordion defaultActiveKey="2">
-                  <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                   OS: {handleEmpty(this.props.data.os, "name")}
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="0">
-                    <Card>
-                      <p>
-                        Discovery IP:{" "}
-                        {handleEmpty(this.props.data.ip, "discovery")}
-                      </p>
-                      <p>Ipv4: {handleEmpty(this.props.data.ip, "ipv4")}</p>
-                      <p>ipv6: {handleEmpty(this.props.data.ip, "ipv6")}</p>
-                    </Card>
-                  </Accordion.Collapse>
-                </Accordion>
+                <OsDetails data={this.props.data.os}/>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <PortDetails data={this.props.data.ports}/>
+              </Col>
+              <Col>
+                <OsDetails data={this.props.data.os}/>
               </Col>
             </Row>
           </Container>

@@ -63,6 +63,7 @@ export default class Results extends Component {
                   <RefreshExport
                     history={this.props.history}
                     params={this.props.match.params}
+                    data={this.state.allResults}
                   />
                 </Col>
               </Row>
