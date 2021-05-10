@@ -3,12 +3,13 @@ import Button from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
+import Alert from "react-bootstrap/Alert";
 import { handleEmpty, doesExist } from "../../Helpers/processdata";
 
 export default class Vulnerabilities extends Component {
   constructor(props) {
     super(props);
-    this.state = { res: [], loaded: false, scanning: false };
+    this.state = { res: [], loaded: false, scanning: false, showAlert: true };
     this.getVulnerabilities = this.getVulnerabilities.bind(this);
   }
 
@@ -24,7 +25,7 @@ export default class Vulnerabilities extends Component {
     if (this.state.scanning) {
       return (
         <Button variant="outline-dark" style={{ width: 40 }}>
-          <Spinner animation="border" size="sm"/>
+          <Spinner animation="border" size="sm" />
         </Button>
       );
     } else {
@@ -55,24 +56,48 @@ export default class Vulnerabilities extends Component {
         this.setState({ vulnerabilities: res, loaded: true, scanning: false });
         console.log(res);
       })
-      .catch( (error)=> {
-        this.setState({ vulnerabilities: [], loaded: true, scanning: false });
+      .catch((error) => {
+        this.setState({ vulnerabilities: [], loaded: false, scanning: false, showAlert: true });
         console.log(error);
       });
   };
 
+  alertMessage = () => {
+    if (this.state.showAlert) {
+      return (
+        <Alert variant="danger" onClose={() => this.setState({showAlert: false})} dismissible>
+          <p>
+           Query Failed, try again later
+          </p>
+        </Alert>
+      );
+    }
+  };
+  setShow = () => {};
   render() {
     return (
-      <Card style={{ width: "100%", margin: 20 }}>
-        <Card.Header>
-          <Card.Title> Vulnerabilities</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            {this.state.loaded
-              ? this.state.res.length + " found"
-              : this.loadButton()}
-          </Card.Subtitle>
-        </Card.Header>
-      </Card>
+      <div style={{width: "100%", marginRight: 30}}>
+        {this.alertMessage()}
+        <Card
+          style={{
+            width: "100%",
+            margin: 20,
+            backgroundColor: "#343a40",
+            color: "#f8f9fa",
+          }}
+        >
+          <Card.Header>
+            <Card.Title>
+              <b>Vulnerabilities:</b>
+            </Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">
+              {this.state.loaded
+                ? this.state.res.length + " found"
+                : this.loadButton()}
+            </Card.Subtitle>
+          </Card.Header>
+        </Card>
+      </div>
     );
   }
 }

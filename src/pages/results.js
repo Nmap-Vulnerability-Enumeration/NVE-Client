@@ -48,11 +48,11 @@ export default class Results extends Component {
     return (
       <div style={backgroundStyle}>
         <Container fluid style={{ padding: 0 }}>
-          <Row>
+          <Row style={{ padding: 0, marginLeft: 20 }}>
             <HeaderBar fixed="top" />
           </Row>
           <br />
-          <Row style={{ padding: 0 }}>
+          <Row style={{ padding: 0, margin: 10 }}>
             <Col md={10}>
               <FilterOptions changeFilter={this.changeFilter} />
             </Col>
@@ -76,7 +76,7 @@ export default class Results extends Component {
               display: "inline-flex !important",
             }}
           >
-            <Col md="auto" style={{ Margin: 10 }}>
+            <Col md="auto" style={{ margin: 10 }}>
               <TableAll
                 data={this.state.shownResults}
                 showDetails={this.showDetailsModal}

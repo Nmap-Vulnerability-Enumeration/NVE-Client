@@ -12,14 +12,19 @@ export default class IpDetails extends Component {
 
   render() {
     return (
-      <Accordion defaultActiveKey="2">
-        <Accordion.Toggle as={Button} variant="link" eventKey="0" stlye={ModalStyle}>
-        <span stlye={{ display: "inline - block"}}><b>IP address:</b> </span>
+      <Accordion defaultActiveKey="2" style={ModalStyle}>
+        <Accordion.Toggle
+          as={Button}
+          variant="link"
+          eventKey="0"
+          style={ModalStyle}
+        >
+          <span style={{ display: "inline - block" }}>
+            <b>IP address:</b>
+          </span>
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-          <Card
-            style={CardStyle}
-          >
+          <Card style={CardStyle}>
             <p>Discovery IP: {handleEmpty(this.props.data.ip, "discovery")}</p>
             <p>Ipv4: {handleEmpty(this.props.data.ip, "ipv4")}</p>
             <p>ipv6: {handleEmpty(this.props.data.ip, "ipv6")}</p>

@@ -39,9 +39,8 @@ export default class DetailsModal extends Component {
           <Container fluid>
             <Row>
               <Col>
-                <span stlye={{ display: "inline - block" }}>
-                  {" "}
-                  <b> Hostname:</b> {handleEmpty(this.props.data.hostname)}{" "}
+                <span style={{ display: "inline - block" }}>
+                  <b> Hostname:</b> {handleEmpty(this.props.data.hostname)}
                 </span>
               </Col>
               <Col>
@@ -51,7 +50,7 @@ export default class DetailsModal extends Component {
             <br />
             <Row>
               <Col>
-                <span stlye={{ display: "inline - block" }}>
+                <span style={{ display: "inline - block" }}>
                   <b>MAC Address:</b> {handleEmpty(this.props.data.mac)}
                 </span>
               </Col>
@@ -71,7 +70,7 @@ export default class DetailsModal extends Component {
             <br />
             <Row>
               <Col>
-                <span stlye={{ display: "inline - block" }}>
+                <span style={{ display: "inline - block" }}>
                   <b> Uptime:</b> {handleEmpty(this.props.data.uptime)}
                 </span>
               </Col>
