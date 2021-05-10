@@ -11,7 +11,7 @@ export default class OsDetails extends Component {
 
   renderDetails = (block) => {
     return (
-      <Card style={{marginLeft: 20}}>
+      <Card style={{ marginLeft: 20 }}>
         <p> Type: {handleEmpty(block.type)}</p>
         <p>vendor: {handleEmpty(block.vendor)}</p>
         <p>Os Family: {handleEmpty(block.osfamily)}</p>
@@ -25,11 +25,15 @@ export default class OsDetails extends Component {
     return (
       <Accordion defaultActiveKey="2">
         <Accordion.Toggle as={Button} variant="link" eventKey="0">
-          Operation System: {handleEmpty(this.props.data, "name")}
+          Operating System: {handleEmpty(this.props.data, "name")}
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-            <div> 
-          {dropNA(this.props.data.osclass).map(block => this.renderDetails(block))}
+          <div>
+            {this.props.data != null
+              ? dropNA(this.props.data.osclass).map((block) =>
+                  this.renderDetails(block)
+                )
+    : [].map((block) => this.renderDetails(block)) }
           </div>
         </Accordion.Collapse>
       </Accordion>

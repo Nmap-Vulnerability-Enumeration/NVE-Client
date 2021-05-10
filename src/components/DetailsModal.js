@@ -12,6 +12,7 @@ import IpDetails from "./IpDetails";
 import OsDetails from "./OsDetails";
 import PortDetails from "./PortDetails"
 import ServiceDetails from './ServiceDetails'
+import StatusDetails from './StatusDetails'
 
 export default class DetailsModal extends Component {
   constructor(props) {
@@ -66,6 +67,15 @@ export default class DetailsModal extends Component {
               </Col>
               <Col>
                 <ServiceDetails data={this.props.data.tcp}/>
+              </Col>
+            </Row>
+            <br/>
+            <Row>
+              <Col>
+              <p> Uptime: {handleEmpty(this.props.data.uptime)}</p>
+              </Col>
+              <Col>
+                <StatusDetails data={this.props.data.status}/>
               </Col>
             </Row>
           </Container>
