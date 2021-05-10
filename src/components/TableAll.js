@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
 import { handleEmpty } from "../Helpers/processdata";
-import CustomButton from "../Components/CustomButton";
+import CustomButton from "./CustomButton";
 
 export default class TableAll extends Component {
   constructor(props) {
@@ -10,18 +10,17 @@ export default class TableAll extends Component {
 
   renderRow = (key) => {
     let block = this.props.data[key].value;
-    console.log(block);
     return React.createElement(() => (
       <tr>
         <td>{handleEmpty(block.hostname)}</td>
         <td>{handleEmpty(block.ip, "discovery")}</td>
         <td>{handleEmpty(block.os, "name")}</td>
         <td>{handleEmpty(block.status, "state")}</td>
-        <td>{block.ports.filter((port) => port.state == "open").length}</td>
+        <td>{block.ports.filter((port) => port.state === "open").length}</td>
         <td>{handleEmpty(block.uptime)}</td>
         <td>{handleEmpty(block.vendor, false, true)}</td>
         <td>
-          <CustomButton />
+          <CustomButton getDetails={this.props.showDetails} ipAddress={block.ip.discovery}/>
         </td>
       </tr>
     ));

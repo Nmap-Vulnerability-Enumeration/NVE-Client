@@ -5,9 +5,9 @@ import Col from "react-bootstrap/Col";
 import TableAll from "../Components/TableAll";
 import HeaderBar from "../Components/HeaderBar";
 import { backgroundStyle } from "../Helpers/styles";
-import DetailsModal from '../Components/DetailsModal'
+import DetailsModal from "../Components/DetailsModal";
 import FilterOptions from "../Components/FilterOptions";
-import RefreshExport from "../Components/RefreshExport"
+import RefreshExport from "../Components/RefreshExport";
 
 export default class Results extends Component {
   constructor(props) {
@@ -15,7 +15,9 @@ export default class Results extends Component {
     this.state = {
       allResults: [],
       shownResults: [],
-      filter: "all"
+      details: [],
+      filter: "all",
+      showDetails: false,
     };
     this.changeFilter = this.changeFilter.bind(this);
   }
@@ -30,28 +32,38 @@ export default class Results extends Component {
     this.setState({ filter: newFilter });
   };
 
-  loadVulnerabilities = async (identifier) =>  {
-    await fetch("/api/v1/devices/all")
+  hideDetailsModal = () => {
+    this.setState({ details: [], showDetails: false });
+  };
+
+  showDetailsModal = async (ipAddress) => {
+    await fetch("/api/v1/device?discovery_ip=" + ipAddress)
       .then((response) => response.json())
-      .then((res) => console.log(res));
-  }
+      .then((res) => {
+        this.setState({ details: res[0].value, showDetails: true });
+        console.log(res[0].value);
+      });
+  };
 
   render() {
     return (
       <div style={backgroundStyle}>
         <Container fluid style={{ padding: 0 }}>
           <Row>
-            <HeaderBar fixed="top"/>
+            <HeaderBar fixed="top" />
           </Row>
           <br />
           <Row style={{ padding: 0 }}>
             <Col md={10}>
-              <FilterOptions changeFilter={this.changeFilter}/>
+              <FilterOptions changeFilter={this.changeFilter} />
             </Col>
             <Col>
               <Row>
                 <Col>
-                  <RefreshExport history={this.props.history} params={this.props.match.params}/>
+                  <RefreshExport
+                    history={this.props.history}
+                    params={this.props.match.params}
+                  />
                 </Col>
               </Row>
             </Col>
@@ -64,14 +76,17 @@ export default class Results extends Component {
               display: "inline-flex !important",
             }}
           >
-            <Row>
-              <div style={{ backgroundColor: "#1e252d" }}>
-                <Col md="auto" style={{ Margin: 10 }}>
-                  <TableAll data={this.state.shownResults} />
-                </Col>
-                <DetailsModal show ={false} />
-              </div>
-            </Row>
+            <Col md="auto" style={{ Margin: 10 }}>
+              <TableAll
+                data={this.state.shownResults}
+                showDetails={this.showDetailsModal}
+              />
+            </Col>
+            <DetailsModal
+              data={this.state.details}
+              show={this.state.showDetails}
+              close={this.hideDetailsModal}
+            />
           </div>
         </Container>
       </div>

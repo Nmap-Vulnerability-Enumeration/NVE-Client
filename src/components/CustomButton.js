@@ -11,6 +11,7 @@ export default class CustomButton extends Component {
       <Button
         variant="outline-secondary"
         style={{ paddingTop: "0rem", paddingBottom: "0rem", margin: 0 }}
+        onClick={()=>this.props.getDetails(this.props.ipAddress)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
