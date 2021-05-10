@@ -1,47 +1,51 @@
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
+import { handleEmpty } from "../Helpers/processdata";
+import CustomButton from "../Components/CustomButton";
 
 export default class TableAll extends Component {
   constructor(props) {
     super(props);
-    this.row = this.row.bind(this)
   }
 
-  row = (key) => {
+  renderRow = (key) => {
     let block = this.props.data[key].value;
+    console.log(block);
     return React.createElement(() => (
       <tr>
-        <td>{block.hostname}</td>
-        <td>{block.ip.discovery}</td>
-        <td>{block.os == null ? "NA": block.os.name}</td>
-        <td>{block.status.state}</td>
-        <td>{block.ports.filter(port =>port.state == "open").length}</td>
-        <td>{"NA"}</td>
-        <td>{block.uptime == null ? "NA" : block.uptime}</td>
-        <td>{block.vendor == null ? "NA": block.vendor}</td>
-        <td>{block.vulns == null ? "NA": block.vulns}</td>
+        <td>{handleEmpty(block.hostname)}</td>
+        <td>{handleEmpty(block.ip, "discovery")}</td>
+        <td>{handleEmpty(block.os, "name")}</td>
+        <td>{handleEmpty(block.status, "state")}</td>
+        <td>{block.ports.filter((port) => port.state == "open").length}</td>
+        <td>{handleEmpty(block.uptime)}</td>
+        <td>{handleEmpty(block.vendor, false, true)}</td>
+        <td>
+          <CustomButton />
+        </td>
       </tr>
     ));
   };
 
   render() {
     return (
-      <Table striped bordered hover variant="dark"  responsive>
+      <Table striped bordered hover variant="dark" responsive>
         <thead>
           <tr>
             <th>Hostname</th>
             <th>IP</th>
             <th>OS</th>
             <th>Status</th>
-            <th>Num Open Ports</th>
             <th>Num of Services</th>
             <th>Up-time</th>
             <th>Vendor</th>
-            <th>Num of Vulnerabilties</th>
+            <th>More</th>
           </tr>
         </thead>
         <tbody>
-          {Object.keys(this.props.data).map((key, index) => this.row(key))}
+          {Object.keys(this.props.data).map((key, index) =>
+            this.renderRow(key)
+          )}
         </tbody>
       </Table>
     );

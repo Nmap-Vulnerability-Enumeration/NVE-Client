@@ -6,7 +6,7 @@ import {
   BrowserRouter as Router,
   Switch,
 } from "react-router-dom";
-import Results from './Pages/Results'
+import Results from './Pages/results'
 import Home from './Pages/Home'
 
 class App extends Component {

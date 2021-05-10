@@ -7,12 +7,11 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
-import Spinner from "react-bootstrap/Spinner";
+import LoadingModal  from '../Components/LoadingModal'
 import { backgroundStyle, H1Style } from "../Helpers/styles";
 import { FormGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { setUp } from "../Helpers/requests";
+import { setUp, wasSuccessful, redirect } from "../Helpers/requests";
 
 export default class Home extends Component {
   f;
@@ -27,39 +26,42 @@ export default class Home extends Component {
   }
 
   handleSubmit = async (event) => {
+
     const form = event.currentTarget;
+
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-    } else {
+    } 
+    else {
       event.preventDefault();
       event.stopPropagation();
       this.setState({ isValidated: true });
 
+      // register address and subnet mask
       let request = setUp(this.state.IpAddress, this.state.SubnetMask);
-      console.log(request);
       let response = await fetch("/api/v1/setup", request).then((response) => {
         return response.status;
       });
 
-      if (response === 200) {
+      if (wasSuccessful(response)) {
         this.handleShow();
+
+        //  cache results
         let scan_result = await fetch("/api/v1/devices/all").then(
           (response) => {
             return response.status;
           }
         );
-        console.log(scan_result)
 
-        if (scan_result == 200) {
-          this.props.history.push(
-            "/scan/IpAddress=" +
-              this.state.IpAddress +
-              "&SubnetMask=" +
-              this.state.SubnetMask
-          );
+        if (wasSuccessful(scan_result)) {
+          redirect(this.props.history, this.state.IpAddress, this.state.SubnetMask)
         }
-      } else {
+        else{
+          alert("Error Code: " + scan_result);
+        }
+      } 
+      else {
         
         alert("Error Code: " + response + ", invalid IP or subnetmaks");
         return;
@@ -82,23 +84,7 @@ export default class Home extends Component {
     return (
       <div style={backgroundStyle}>
         <Container fluid style={{ padding: 0, backgroundColor: "#1e252d", textAlign: 'center' }}>
-          <Modal show={this.state.showModal} onHide={this.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>
-                Scanning for devices..
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body stlye={{ disply: "flex", justifyContent: "center" }}>
-              <div>
-                <Spinner animation="border" size="xl" />
-              </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="primary" onClick={this.handleClose}>
-                Cancel
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <LoadingModal handleClose={this.handleClose} showModal={this.state.showModal} />
           <Row md={5}>
             <br />
             <br />
