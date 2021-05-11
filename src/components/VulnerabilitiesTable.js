@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
-import Pagination from "react-bootstrap/Pagination";
-import { handleEmpty, getNumPages} from "../Helpers/processdata";
+import TablePagination from "@material-ui/core/TablePagination";
+import { handleEmpty, getNumPages, sliceObject } from "../Helpers/processdata";
 import CustomButton from "./CustomButton";
+import { PureComponent } from "react";
+import { event } from "jquery";
 
 export default class VulnerabilitiesTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pages: [],
-      active: 0,
-      start: 0,
-      end: 10,
+      activePage: 0,
+      rowsPerPage: 10,
     };
   }
+
   renderRow = (key) => {
     let block = this.props.data[key].value;
     return React.createElement(() => (
@@ -27,38 +29,27 @@ export default class VulnerabilitiesTable extends Component {
     ));
   };
 
-  getStart = (index) => {
-    return Number(index) * 10 - 10;
+  changePage = (entry) => {
+    let page = this.parseOutput(entry);
+
+    if (page) {
+      this.setState({
+        activePage: page,
+        pages: this.loadPagination(Object.keys(this.props.data).length, page),
+      });
+    }
   };
 
-  getEnd = (index) => {
-    return Number(index) * 10;
+  handleChangePage = (event, newPage) => {
+    this.setState({ activePage: newPage });
   };
 
-  changePage = (page) => {
+  handleChangeRowsPerPage = (event) => {
     this.setState({
-      active: page,
-      start: this.getStart(page),
-      end: this.getEnd(page),
+      rowsPerPage: parseInt(event.target.value, 10),
+      activePage: 0,
     });
   };
-
-  
-  componentDidMount() {
-    var items = [];
-    items.push(<Pagination.First />);
-    let numPages = getNumPages(Object.keys(this.props.data).length, 10)
-    for (let number = 1; number <= numPages; number++) {
-      items.push(
-        <Pagination.Item key={number} active={number == this.state.active}>
-          {number}
-        </Pagination.Item>
-      );
-    }
-    items.push(<Pagination.Last />);
-
-    this.setState({ pages: items });
-  }
 
   render() {
     return (
@@ -74,17 +65,22 @@ export default class VulnerabilitiesTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {Object.keys(this.props.data)
-              .slice(this.state.start, this.state.end)
-              .map((key, index) => this.renderRow(key))}
+            {sliceObject(
+              this.props.data,
+              this.state.activePage,
+              this.state.rowsPerPage
+            ).map((key, index) => this.renderRow(key))}
           </tbody>
         </Table>
-        <Pagination
-          style={{ width: "100%" }}
-          onClick={(e) => this.changePage(e.target.text)}
-        >
-          {this.state.pages}
-        </Pagination>
+        <TablePagination
+          component="div"
+          style={{color: 'inherit', font:'inherit'}}
+          count={Object.keys(this.props.data).length}
+          page={this.state.activePage}
+          onChangePage={this.handleChangePage}
+          rowsPerPage={this.state.rowsPerPage}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        />
       </div>
     );
   }

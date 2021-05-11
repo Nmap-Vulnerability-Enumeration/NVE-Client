@@ -33,7 +33,7 @@ export default class LoadingModal extends Component {
                 style={{ margin: 0, padding: 0 }}
               />
               <div style={{ width: 20 }}></div>
-              <Modal.Title>Scanning for devices..</Modal.Title>
+              <Modal.Title>Scanning for devices ...</Modal.Title>
             </Row>
             <Row>
               <Col md={9}>{""}</Col>
