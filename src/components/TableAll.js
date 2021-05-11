@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
-import { handleEmpty } from "../Helpers/processdata";
+import { handleEmpty, secondsToDhms } from "../Helpers/processdata";
 import CustomButton from "./CustomButton";
+
 
 export default class TableAll extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export default class TableAll extends Component {
         <td>{handleEmpty(block.os, "name")}</td>
         <td>{handleEmpty(block.status, "state")}</td>
         <td>{block.ports.filter((port) => port.state === "open").length}</td>
-        <td>{handleEmpty(block.uptime)}</td>
+        <td>{secondsToDhms(handleEmpty(block.uptime))}</td>
         <td>{handleEmpty(block.vendor, false, true)}</td>
         <td>
           <CustomButton getDetails={this.props.showDetails} ipAddress={block.ip.discovery}/>

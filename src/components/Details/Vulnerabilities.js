@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import Button from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
+import VulnerabilitiesTable from "../VulnerabilitiesTable"
 import { handleEmpty, doesExist } from "../../Helpers/processdata";
 
 export default class Vulnerabilities extends Component {
@@ -50,11 +53,15 @@ export default class Vulnerabilities extends Component {
         if (!response.ok) {
           throw Error(response.statusText);
         }
-        response.json();
+        return response.json();
       })
       .then((res) => {
-        this.setState({ vulnerabilities: res, loaded: true, scanning: false });
-        console.log(res);
+        this.setState({
+          vulnerabilities: res[0],
+          loaded: true,
+          scanning: false,
+        });
+        console.log(res[0]);
       })
       .catch((error) => {
         this.setState({
@@ -71,7 +78,7 @@ export default class Vulnerabilities extends Component {
     if (this.state.showAlert) {
       return (
         <Alert
-        style={{marginLeft: 20}}
+          style={{ marginLeft: 20 }}
           variant="danger"
           onClose={() => this.setState({ showAlert: false })}
           dismissible
@@ -81,7 +88,7 @@ export default class Vulnerabilities extends Component {
       );
     }
   };
-  setShow = () => {};
+
   render() {
     return (
       <div style={{ width: "100%", marginRight: 30 }}>
@@ -89,7 +96,8 @@ export default class Vulnerabilities extends Component {
         <Card
           style={{
             width: "100%",
-            margin: 20,
+            marginRight: 20,
+            marginLeft:20,
             backgroundColor: "#343a40",
             color: "#f8f9fa",
           }}
@@ -99,10 +107,11 @@ export default class Vulnerabilities extends Component {
               <b>Vulnerabilities:</b>
             </Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              {this.state.loaded
-                ? this.state.res.length + " found"
-                : this.loadButton()}
+                  {this.state.loaded
+                    ? Object.keys(this.state.vulnerabilities).length + " found"
+                    : this.loadButton()}
             </Card.Subtitle>
+            {(this.state.loaded && Object.keys(this.state.vulnerabilities).length > 0)? <VulnerabilitiesTable data={this.state.vulnerabilities}/> : ""}
           </Card.Header>
         </Card>
       </div>

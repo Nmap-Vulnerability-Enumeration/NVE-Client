@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { handleEmpty } from "../../Helpers/processdata";
+import { handleEmpty, secondsToDhms } from "../../Helpers/processdata";
 import IpDetails from "./IpDetails";
 import OsDetails from "./OsDetails";
 import PortDetails from "./PortDetails";
@@ -71,7 +71,7 @@ export default class DetailsModal extends Component {
             <Row>
               <Col>
                 <span style={{ display: "inline - block" }}>
-                  <b> Uptime:</b> {handleEmpty(this.props.data.uptime)}
+                  <b> Uptime:</b> {secondsToDhms(handleEmpty(this.props.data.uptime))}
                 </span>
               </Col>
               <Col>

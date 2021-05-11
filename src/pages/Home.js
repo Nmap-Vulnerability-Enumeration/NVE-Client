@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 import LoadingModal from "../Components/LoadingModal";
 import { backgroundStyle, H1Style } from "../Helpers/styles";
 import { FormGroup } from "react-bootstrap";
@@ -20,6 +21,8 @@ export default class Home extends Component {
       IpAddress: "",
       SubnetMask: "",
       showModal: false,
+      showAlert: false,
+      errorCode: "",
     };
   }
 
@@ -39,8 +42,11 @@ export default class Home extends Component {
         );
       })
       .catch((error) => {
-        alert("Error Code: " + error);
-        this.handleClose()
+        this.setState({
+          errorCode: "Query failed. " + error,
+          showAlert: true,
+        });
+        this.handleClose();
         console.log(error);
       });
   };
@@ -63,16 +69,32 @@ export default class Home extends Component {
           if (!response.ok) {
             throw Error(response.statusText);
           }
-          this.cacheResults()
+          this.cacheResults();
         })
         .catch((error) => {
-          alert("Error Code: " + error);
-          this.handleClose()
+          this.setState({
+            errorCode: "Query failed. " + error,
+            showAlert: true,
+          });
+          this.handleClose();
           console.log(error);
         });
     }
   };
-
+  alertMessage = () => {
+    if (this.state.showAlert) {
+      return (
+        <Alert
+          style={{ marginLeft: 20 }}
+          variant="danger"
+          onClose={() => this.setState({ showAlert: false })}
+          dismissible
+        >
+          {this.state.errorCode}
+        </Alert>
+      );
+    }
+  };
   handleChange = (event) => {
     let fieldName = event.target.name;
     let fleldVal = event.target.value;
@@ -98,6 +120,7 @@ export default class Home extends Component {
             textAlign: "center",
           }}
         >
+          {this.alertMessage()}
           <LoadingModal
             handleClose={this.handleClose}
             showModal={this.state.showModal}
